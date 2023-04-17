@@ -29,8 +29,7 @@ public class StatsServerClientImpl extends BaseClient implements StatsServerClie
     public EndpointHitDto sendEndpointHit(EndpointHitDto endpointHitDto) {
         try {
             ResponseEntity<Object> response = post("/hit", endpointHitDto);
-            return objectMapper.convertValue(response.getBody(), new TypeReference<>() {
-            });
+            return objectMapper.convertValue(response.getBody(), EndpointHitDto.class);
         } catch (IllegalArgumentException e) {
             String mes = "Unable to save hit";
             log.error(mes, e);
@@ -48,10 +47,9 @@ public class StatsServerClientImpl extends BaseClient implements StatsServerClie
                     "unique", unique == null ? "" : unique
             );
             ResponseEntity<Object> response = get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
-            return objectMapper.convertValue(response.getBody(), new TypeReference<>() {
-            });
+            return objectMapper.convertValue(response.getBody(), new TypeReference<>() {});
         } catch (IllegalArgumentException e) {
-            String mes = "Unable to save hit";
+            String mes = "Unable to get stats";
             log.error(mes, e);
             throw new StatsClientException(mes, e);
         }
