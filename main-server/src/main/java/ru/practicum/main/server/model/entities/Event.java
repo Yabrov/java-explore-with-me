@@ -3,6 +3,7 @@ package ru.practicum.main.server.model.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import ru.practicum.main.server.model.enums.EventState;
 
@@ -20,6 +21,30 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "events")
 public class Event extends BaseEntity<Long> {
+
+    public Event(Long id,
+                 String annotation,
+                 Category category,
+                 String description,
+                 LocalDateTime eventDate,
+                 User initiator,
+                 Location location,
+                 Boolean paid,
+                 Integer participantLimit,
+                 Boolean requestModeration,
+                 String title) {
+        this.id = id;
+        this.annotation = annotation;
+        this.category = category;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.initiator = initiator;
+        this.location = location;
+        this.paid = paid;
+        this.participantLimit = participantLimit;
+        this.requestModeration = requestModeration;
+        this.title = title;
+    }
 
     @Column(
             name = "annotation",
@@ -40,6 +65,7 @@ public class Event extends BaseEntity<Long> {
             nullable = false,
             columnDefinition = "timestamp"
     )
+    @CreationTimestamp
     private LocalDateTime createdOn;
 
     @Column(
@@ -94,7 +120,7 @@ public class Event extends BaseEntity<Long> {
             length = 10,
             nullable = false
     )
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private EventState state;
 
     @Column(

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import ru.practicum.main.server.model.enums.RequestState;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@DynamicUpdate
 @NoArgsConstructor
 @Table(name = "requests")
 public class ParticipationRequest extends BaseEntity<Long> {

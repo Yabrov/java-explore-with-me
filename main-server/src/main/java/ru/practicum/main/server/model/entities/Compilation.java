@@ -3,6 +3,7 @@ package ru.practicum.main.server.model.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@DynamicUpdate
 @NoArgsConstructor
 @Table(name = "compillations")
 public class Compilation extends BaseEntity<Long> {

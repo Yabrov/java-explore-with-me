@@ -29,12 +29,12 @@ public class EventAdminController {
                                               @RequestParam(required = false) LocalDateTime rangeEnd,
                                               @RequestParam(defaultValue = "0") Integer from,
                                               @RequestParam(defaultValue = "10") Integer size) {
-        return eventService.getAllEvents(users, states, categories, rangeStart, rangeEnd, from, size);
+        return eventService.getAllEventsAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
     @PatchMapping("/events/{eventId}")
     public EventFullDto updateEvent(@RequestBody @Valid UpdateEventAdminRequest request,
                                     @PathVariable Long eventId) {
-        return eventService.updateEvent(eventId, request);
+        return eventService.adminUpdateEvent(eventId, request);
     }
 }

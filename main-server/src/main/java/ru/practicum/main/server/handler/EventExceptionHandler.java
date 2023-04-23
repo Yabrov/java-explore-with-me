@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.main.server.dto.error.ApiError;
+import ru.practicum.main.server.exception.EventCreationException;
 import ru.practicum.main.server.exception.EventNotFoundException;
 import ru.practicum.main.server.exception.EventUpdateException;
 
@@ -27,6 +28,15 @@ public class EventExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<Object> eventUpdateExceptionHandler(EventUpdateException e) {
         HttpStatus status = HttpStatus.CONFLICT;
+        ApiError responseBody = new ApiError(e, status, "For the requested operation the conditions are not met.");
+        return new ResponseEntity<>(responseBody, status);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(EventCreationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> eventCreationExceptionHandler(EventCreationException e) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
         ApiError responseBody = new ApiError(e, status, "For the requested operation the conditions are not met.");
         return new ResponseEntity<>(responseBody, status);
     }

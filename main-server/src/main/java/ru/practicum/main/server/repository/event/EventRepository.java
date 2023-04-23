@@ -17,7 +17,21 @@ public interface EventRepository {
                                     LocalDateTime rangeEnd,
                                     Pageable pageable);
 
+    Collection<Event> findAllEvents(String text,
+                                    Collection<Long> categories,
+                                    Boolean paid,
+                                    LocalDateTime rangeStart,
+                                    LocalDateTime rangeEnd,
+                                    Boolean onlyAvailable,
+                                    Pageable pageable);
+
     Optional<Event> findEventById(Long eventId);
 
+    Optional<Event> findPublishedEventById(Long eventId);
+
     Event saveEvent(Event event);
+
+    Collection<Event> findAllUsersEvents(Long userId, Pageable pageable);
+
+    Optional<Event> findUsersEventById(Long userId, Long eventId);
 }

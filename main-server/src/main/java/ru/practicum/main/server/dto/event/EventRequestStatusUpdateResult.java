@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Collection;
+
 @Getter
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class EventRequestStatusUpdateResult {
-    private String description;
-    private ParticipationRequestDto confirmedRequests;
-    private ParticipationRequestDto rejectedRequests;
+    private Collection<ParticipationRequestDto> confirmedRequests;
+    private Collection<ParticipationRequestDto> rejectedRequests;
 }

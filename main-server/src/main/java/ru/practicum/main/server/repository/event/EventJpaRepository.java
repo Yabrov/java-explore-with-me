@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.enums.EventState;
+import ru.practicum.main.server.model.enums.RequestState;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 
 public interface EventJpaRepository extends JpaRepository<Event, Long> {
 
@@ -23,4 +25,30 @@ public interface EventJpaRepository extends JpaRepository<Event, Long> {
                                 LocalDateTime rangeStart,
                                 LocalDateTime rangeEnd,
                                 Pageable pageable);
+
+    @Query("SELECT e FROM Event e LEFT JOIN ParticipationRequest r ON r.event.id = e.id GROUP BY e.id " +
+            "HAVING (COALESCE(:text, null) IS null OR LOWER(e.annotation || e.description) LIKE :text) " +
+            "AND (COALESCE(:categories, null) IS null OR e.category.id IN :categories) " +
+            "AND (COALESCE(:rangeStart, :curTime) <= e.eventDate) " +
+            "AND (COALESCE(:rangeEnd, null) IS null OR e.eventDate <= :rangeEnd) " +
+            "AND (:onlyAvailable = false OR e.participantLimit > COUNT(r))" +
+            "AND (COALESCE(:paid, null) IS null OR e.paid = :paid)" +
+            "AND r.status = :reqState AND e.state = :state " +
+            "ORDER BY e.eventDate")
+    Collection<Event> getEvents(String text,
+                                Collection<Long> categories,
+                                EventState state,
+                                RequestState reqState,
+                                Boolean paid,
+                                LocalDateTime curTime,
+                                LocalDateTime rangeStart,
+                                LocalDateTime rangeEnd,
+                                Boolean onlyAvailable,
+                                Pageable pageable);
+
+    Optional<Event> findEventByIdAndState(Long eventId, EventState state);
+
+    Collection<Event> findAllByInitiator_Id(Long initiatorId, Pageable pageable);
+
+    Optional<Event> findEventByIdAndInitiator_Id(Long eventId, Long initiatorId);
 }
