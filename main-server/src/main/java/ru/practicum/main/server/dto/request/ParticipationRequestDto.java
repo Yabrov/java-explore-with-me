@@ -1,4 +1,4 @@
-package ru.practicum.main.server.dto.event;
+package ru.practicum.main.server.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 public class ParticipationRequestDto {
 
     private Long id;
-
-    private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

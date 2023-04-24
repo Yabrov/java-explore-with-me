@@ -19,21 +19,13 @@ import java.time.LocalDateTime;
 public class ParticipationRequest extends BaseEntity<Long> {
 
     public ParticipationRequest(Long id,
-                                String description,
                                 Event event,
                                 User requester) {
         this.id = id;
-        this.description = description;
         this.event = event;
         this.requester = requester;
+        this.status = RequestState.PENDING;
     }
-
-    @Column(
-            name = "description",
-            nullable = false,
-            columnDefinition = "text"
-    )
-    private String description;
 
     @Column(
             name = "created",

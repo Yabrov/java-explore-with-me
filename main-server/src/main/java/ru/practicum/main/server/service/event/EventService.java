@@ -1,6 +1,9 @@
 package ru.practicum.main.server.service.event;
 
 import ru.practicum.main.server.dto.event.*;
+import ru.practicum.main.server.dto.request.EventRequestStatusUpdateRequest;
+import ru.practicum.main.server.dto.request.EventRequestStatusUpdateResult;
+import ru.practicum.main.server.dto.request.ParticipationRequestDto;
 import ru.practicum.main.server.model.enums.EventSort;
 import ru.practicum.main.server.model.enums.EventState;
 
