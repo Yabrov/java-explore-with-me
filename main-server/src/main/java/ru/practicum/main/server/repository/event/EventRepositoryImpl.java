@@ -72,4 +72,9 @@ public class EventRepositoryImpl implements EventRepository {
     public Optional<Event> findUsersEventById(Long userId, Long eventId) {
         return jpaRepository.findEventByIdAndInitiator_Id(eventId, userId);
     }
+
+    @Override
+    public Collection<Event> findAllEventsByIds(Collection<Long> ids) {
+        return jpaRepository.findAllByIdIn(ids);
+    }
 }

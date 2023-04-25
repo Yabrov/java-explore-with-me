@@ -17,7 +17,7 @@ public class GenericExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<Object> userViolationExceptionHandler(ConstraintViolationException e) {
+    public ResponseEntity<Object> violationExceptionHandler(ConstraintViolationException e) {
         HttpStatus status = HttpStatus.CONFLICT;
         ApiError responseBody = new ApiError(e, status, "Integrity constraint has been violated.");
         return new ResponseEntity<>(responseBody, status);

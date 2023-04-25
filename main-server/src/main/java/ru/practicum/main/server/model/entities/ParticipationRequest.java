@@ -45,6 +45,7 @@ public class ParticipationRequest extends BaseEntity<Long> {
 
     @Column(
             name = "status",
+            length = 10,
             nullable = false
     )
     @Enumerated(EnumType.STRING)

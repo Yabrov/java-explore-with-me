@@ -34,4 +34,6 @@ public interface EventRepository {
     Collection<Event> findAllUsersEvents(Long userId, Pageable pageable);
 
     Optional<Event> findUsersEventById(Long userId, Long eventId);
+
+    Collection<Event> findAllEventsByIds(Collection<Long> ids);
 }
