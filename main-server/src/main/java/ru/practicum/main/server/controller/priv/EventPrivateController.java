@@ -50,7 +50,7 @@ public class EventPrivateController {
         return eventService.getUsersEventRequests(userId, eventId);
     }
 
-    @GetMapping("/{userId}/events/{eventId}/requests")
+    @PatchMapping("/{userId}/events/{eventId}/requests")
     public EventRequestStatusUpdateResult updateUserEventRequests(@RequestBody @Valid EventRequestStatusUpdateRequest request,
                                                                   @PathVariable Long userId,
                                                                   @PathVariable Long eventId) {

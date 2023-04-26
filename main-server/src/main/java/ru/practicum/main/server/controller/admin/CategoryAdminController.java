@@ -2,6 +2,7 @@ package ru.practicum.main.server.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main.server.dto.category.CategoryDto;
 import ru.practicum.main.server.dto.category.NewCategoryDto;
@@ -9,6 +10,7 @@ import ru.practicum.main.server.service.category.CategoryService;
 
 import javax.validation.Valid;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/admin")

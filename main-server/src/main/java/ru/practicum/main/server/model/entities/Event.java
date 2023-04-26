@@ -3,7 +3,6 @@ package ru.practicum.main.server.model.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import ru.practicum.main.server.model.enums.EventState;
 
@@ -43,6 +42,7 @@ public class Event extends BaseEntity<Long> {
         this.paid = paid;
         this.participantLimit = participantLimit;
         this.requestModeration = requestModeration;
+        this.createdOn = LocalDateTime.now();
         this.title = title;
     }
 
@@ -65,7 +65,6 @@ public class Event extends BaseEntity<Long> {
             nullable = false,
             columnDefinition = "timestamp"
     )
-    @CreationTimestamp
     private LocalDateTime createdOn;
 
     @Column(

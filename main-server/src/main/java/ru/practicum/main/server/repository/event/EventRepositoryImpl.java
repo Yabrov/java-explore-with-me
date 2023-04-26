@@ -24,7 +24,7 @@ public class EventRepositoryImpl implements EventRepository {
                                            LocalDateTime rangeStart,
                                            LocalDateTime rangeEnd,
                                            Pageable pageable) {
-        return jpaRepository.getEvents(users, states, categories, rangeStart, rangeEnd, pageable);
+        return jpaRepository.getEvents(users, states, categories, rangeStart, rangeEnd, pageable).getContent();
     }
 
     @Override
@@ -41,11 +41,10 @@ public class EventRepositoryImpl implements EventRepository {
                 EventState.PUBLISHED,
                 RequestState.CONFIRMED,
                 paid,
-                LocalDateTime.now(),
                 rangeStart,
                 rangeEnd,
                 onlyAvailable,
-                pageable);
+                pageable).getContent();
     }
 
     @Override
@@ -65,7 +64,7 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Collection<Event> findAllUsersEvents(Long userId, Pageable pageable) {
-        return jpaRepository.findAllByInitiator_Id(userId, pageable);
+        return jpaRepository.findAllByInitiator_Id(userId, pageable).getContent();
     }
 
     @Override

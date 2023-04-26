@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.server.dto.event.*;
 import ru.practicum.main.server.dto.location.LocationDto;
 import ru.practicum.main.server.dto.request.EventRequestStatusUpdateRequest;
@@ -36,6 +37,7 @@ public class EventServiceImpl implements EventService {
     private final PageBuilder pageBuilder;
     private static final String SEARCH_PATTERN = "%%%s%%";
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<EventFullDto> getAllEventsAdmin(Collection<Long> users,
                                                       Collection<EventState> states,
@@ -52,6 +54,7 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<EventFullDto> getAllEventsPublic(String text,
                                                        Collection<Long> categories,
@@ -63,12 +66,12 @@ public class EventServiceImpl implements EventService {
                                                        Integer from,
                                                        Integer size) {
         Pageable pageable = pageBuilder.build(from, size, null);
-        String searchPhrase = String.format(SEARCH_PATTERN, text.toLowerCase());
+        String searchPhrase = text == null ? null : String.format(SEARCH_PATTERN, text.toLowerCase());
         Collection<Event> events = eventRepository.findAllEvents(
                 searchPhrase,
                 categories,
                 paid,
-                rangeStart,
+                rangeStart == null ? LocalDateTime.now() : rangeStart,
                 rangeEnd,
                 onlyAvailable,
                 pageable);
@@ -84,6 +87,7 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public EventFullDto getPublishedEventById(Long eventId) {
         Event event = eventRepository.findPublishedEventById(eventId)
@@ -91,6 +95,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.convert(event);
     }
 
+    @Transactional
     @Override
     public EventFullDto adminUpdateEvent(Long eventId, UpdateEventAdminRequest request) {
         Event event = eventRepository.findEventById(eventId)
@@ -142,6 +147,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.convert(eventRepository.saveEvent(event));
     }
 
+    @Transactional
     @Override
     public EventFullDto userUpdateEvent(Long userId, Long eventId, UpdateEventUserRequest request) {
         Event event = eventRepository.findUsersEventById(userId, eventId)
@@ -189,6 +195,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.convert(eventRepository.saveEvent(event));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<EventShortDto> getAllUsersEvents(Long userId, Integer from, Integer size) {
         Pageable pageable = pageBuilder.build(from, size, null);
@@ -199,6 +206,7 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public EventFullDto createEvent(Long userId, NewEventDto eventDto) {
         Event event = newEventDtoMapper.convert(eventDto);
@@ -211,6 +219,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.convert(eventRepository.saveEvent(event));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public EventFullDto getUsersEventById(Long userId, Long eventId) {
         Event event = eventRepository.findUsersEventById(userId, eventId)
@@ -218,6 +227,7 @@ public class EventServiceImpl implements EventService {
         return eventMapper.convert(event);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<ParticipationRequestDto> getUsersEventRequests(Long userId, Long eventId) {
         Event event = eventRepository.findUsersEventById(userId, eventId)
@@ -229,6 +239,7 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public EventRequestStatusUpdateResult updateUserEventRequests(EventRequestStatusUpdateRequest updateRequest,
                                                                   Long userId,

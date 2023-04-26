@@ -31,6 +31,6 @@ public class CompilationRepositoryImpl implements CompilationRepository {
 
     @Override
     public Collection<Compilation> findAllCompilations(Boolean pinned, Pageable pageable) {
-        return jpaRepository.findAllCompilations(pinned, pageable);
+        return jpaRepository.findAllCompilations(pinned, pageable).getContent();
     }
 }
