@@ -43,6 +43,7 @@ public class Event extends BaseEntity<Long> {
         this.participantLimit = participantLimit;
         this.requestModeration = requestModeration;
         this.createdOn = LocalDateTime.now();
+        this.state = EventState.PENDING;
         this.title = title;
     }
 
@@ -129,7 +130,7 @@ public class Event extends BaseEntity<Long> {
     )
     private String title;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "compilation_events",
             joinColumns = @JoinColumn(name = "event_id"),

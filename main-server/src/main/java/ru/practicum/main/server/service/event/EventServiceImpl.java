@@ -109,7 +109,7 @@ public class EventServiceImpl implements EventService {
         if (request.getDescription() != null) {
             event.setDescription(request.getDescription());
         }
-        if (request.getEventDate() != null) {
+        if (request.getEventDate() != null && event.getPublishedOn() != null) {
             if (Duration.between(event.getPublishedOn(), request.getEventDate()).toHours() < 1L) {
                 throw new EventUpdateException("Cannot publish the event because it has wrong eventDate");
             } else {
@@ -140,7 +140,11 @@ public class EventServiceImpl implements EventService {
                 if (event.getState() != EventState.PENDING) {
                     throw new EventUpdateException("Cannot publish the event because it's not in the right state: PENDING");
                 }
-                event.setPublishedOn(LocalDateTime.now());
+                LocalDateTime estimatedPublicationDate = LocalDateTime.now();
+                if (Duration.between(estimatedPublicationDate, event.getEventDate()).toHours() < 1L) {
+                    throw new EventUpdateException("Cannot publish the event because it has wrong eventDate");
+                }
+                event.setPublishedOn(estimatedPublicationDate);
                 event.setState(EventState.PUBLISHED);
             }
         }
@@ -210,7 +214,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto createEvent(Long userId, NewEventDto eventDto) {
         Event event = newEventDtoMapper.convert(eventDto);
-        if (Duration.between(event.getEventDate(), event.getCreatedOn()).toHours() < 2L) {
+        if (Duration.between(event.getCreatedOn(), event.getEventDate()).toHours() < 2L) {
             throw new EventCreationException(event.getEventDate());
         }
         Location location = locationService.createLocation(event.getLocation());
@@ -269,7 +273,7 @@ public class EventServiceImpl implements EventService {
                         request.setStatus(updateRequest.getStatus());
                         confirmedRequestsCount++;
                     } else {
-                        request.setStatus(RequestState.REJECTED);
+                        request.setStatus(RequestState.CANCELED);
                     }
                 } else {
                     request.setStatus(updateRequest.getStatus());
@@ -283,7 +287,7 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
         Collection<ParticipationRequestDto> rejectedRequests = requests
                 .stream()
-                .filter(r -> r.getStatus() == RequestState.REJECTED)
+                .filter(r -> r.getStatus() == RequestState.CANCELED)
                 .map(requestMapper::convert)
                 .collect(Collectors.toList());
         return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);

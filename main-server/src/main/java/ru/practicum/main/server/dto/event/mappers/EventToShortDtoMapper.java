@@ -9,12 +9,14 @@ import ru.practicum.main.server.dto.user.UserShortDto;
 import ru.practicum.main.server.model.entities.Category;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.entities.User;
+import ru.practicum.main.server.model.enums.EventState;
 import ru.practicum.main.server.model.enums.RequestState;
 import ru.practicum.stats.client.service.StatsServerClient;
 import ru.practicum.stats.dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -27,11 +29,13 @@ public class EventToShortDtoMapper implements Converter<Event, EventShortDto> {
 
     @Override
     public EventShortDto convert(Event source) {
-        Collection<ViewStatsDto> views = statsServerClient.getStats(
+        Collection<ViewStatsDto> views = source.getState() == EventState.PUBLISHED
+                ? statsServerClient.getStats(
                 source.getPublishedOn(),
                 LocalDateTime.now(),
                 List.of("/event/" + source.getId()),
-                false);
+                false)
+                : Collections.emptyList();
         long confirmedRequestsCount = source
                 .getRequests()
                 .stream()

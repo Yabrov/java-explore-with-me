@@ -29,8 +29,8 @@ public class Compilation extends BaseEntity<Long> {
     }
 
     @ManyToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             mappedBy = "compilations",
-            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<>();
 

@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Long categoryId) {
         Category category = categoryRepository.findCategoryById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
-        if (category.getEvents().isEmpty()) {
+        if (!category.getEvents().isEmpty()) {
             throw new CategoryIsNotEmptyException();
         }
         categoryRepository.deleteCategory(categoryId);

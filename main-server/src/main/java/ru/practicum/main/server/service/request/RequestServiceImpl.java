@@ -76,7 +76,7 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto cancelRequest(Long requesterId, Long requestId) {
         ParticipationRequest request = requestRepository.findUserRequest(requesterId, requestId)
                 .orElseThrow(() -> new RequestNotFoundException(requestId));
-        request.setStatus(RequestState.REJECTED);
+        request.setStatus(RequestState.CANCELED);
         return requestMapper.convert(requestRepository.saveRequest(request));
     }
 }
