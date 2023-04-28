@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.main.server.model.entities.Compilation;
 
-import java.util.Collection;
-
 public interface CompilationJpaRepository extends JpaRepository<Compilation, Long> {
 
     @Query("SELECT c FROM Compilation c WHERE COALESCE(:pinned, null) = null OR c.pinned = :pinned")
