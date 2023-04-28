@@ -34,9 +34,9 @@ public class EventExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(EventCreationException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<Object> eventCreationExceptionHandler(EventCreationException e) {
-        HttpStatus status = HttpStatus.FORBIDDEN;
+        HttpStatus status = HttpStatus.CONFLICT;
         ApiError responseBody = new ApiError(e, status, "For the requested operation the conditions are not met.");
         return new ResponseEntity<>(responseBody, status);
     }

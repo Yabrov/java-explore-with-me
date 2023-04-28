@@ -23,7 +23,7 @@ public class CompilationAdminController {
         return compilationService.createCompilation(compilationDto);
     }
 
-    @PostMapping("/compilations/{compId}")
+    @DeleteMapping("/compilations/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompilation(@PathVariable Long compId) {
         compilationService.deleteCompilation(compId);
@@ -34,5 +34,4 @@ public class CompilationAdminController {
                                             @PathVariable Long compId) {
         return compilationService.updateCompilation(updateRequest, compId);
     }
-
 }

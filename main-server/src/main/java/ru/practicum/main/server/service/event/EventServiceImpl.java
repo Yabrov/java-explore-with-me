@@ -109,11 +109,16 @@ public class EventServiceImpl implements EventService {
         if (request.getDescription() != null) {
             event.setDescription(request.getDescription());
         }
-        if (request.getEventDate() != null && event.getPublishedOn() != null) {
-            if (Duration.between(event.getPublishedOn(), request.getEventDate()).toHours() < 1L) {
-                throw new EventUpdateException("Cannot publish the event because it has wrong eventDate");
-            } else {
-                event.setEventDate(request.getEventDate());
+        if (request.getEventDate() != null) {
+            if (request.getEventDate().isBefore(LocalDateTime.now())) {
+                throw new EventUpdateException("Event date can not be in past");
+            }
+            if (event.getPublishedOn() != null) {
+                if (Duration.between(event.getPublishedOn(), request.getEventDate()).toHours() < 1L) {
+                    throw new EventUpdateException("Cannot publish the event because it has wrong eventDate");
+                } else {
+                    event.setEventDate(request.getEventDate());
+                }
             }
         }
         if (request.getLocation() != null) {
@@ -270,13 +275,13 @@ public class EventServiceImpl implements EventService {
                 }
                 if (updateRequest.getStatus() == RequestState.CONFIRMED) {
                     if (confirmedRequestsCount < event.getParticipantLimit()) {
-                        request.setStatus(updateRequest.getStatus());
+                        request.setStatus(RequestState.CONFIRMED);
                         confirmedRequestsCount++;
                     } else {
-                        request.setStatus(RequestState.CANCELED);
+                        request.setStatus(RequestState.REJECTED);
                     }
                 } else {
-                    request.setStatus(updateRequest.getStatus());
+                    request.setStatus(RequestState.REJECTED);
                 }
             }
         }
@@ -287,7 +292,7 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
         Collection<ParticipationRequestDto> rejectedRequests = requests
                 .stream()
-                .filter(r -> r.getStatus() == RequestState.CANCELED)
+                .filter(r -> r.getStatus() == RequestState.REJECTED)
                 .map(requestMapper::convert)
                 .collect(Collectors.toList());
         return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);

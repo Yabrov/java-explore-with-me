@@ -55,6 +55,9 @@ public class CompilationServiceImpl implements CompilationService {
                 .orElseThrow(() -> new CompilationNotFoundException(compilationId));
         if (updateRequest.getEvents() != null) {
             Collection<Event> events = eventRepository.findAllEventsByIds(updateRequest.getEvents());
+            for (Event event : events) {
+                event.getCompilations().add(compilation);
+            }
             compilation.getEvents().clear();
             compilation.getEvents().addAll(events);
         }

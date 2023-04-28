@@ -10,6 +10,7 @@ import ru.practicum.main.server.dto.event.EventFullDto;
 import ru.practicum.main.server.model.enums.EventSort;
 import ru.practicum.main.server.service.event.EventService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -35,7 +36,7 @@ public class EventPublicController {
     }
 
     @GetMapping("/events/{id}")
-    public EventFullDto getEvent(@PathVariable Long id) {
+    public EventFullDto getEvent(@PathVariable Long id, HttpServletRequest request) {
         return eventService.getPublishedEventById(id);
     }
 }
