@@ -21,16 +21,17 @@ public class StatsServerAspect {
 
     private final StatsServerClient statsServerClient;
 
-    @Pointcut("execution(public * ru.practicum.main.server.controller.pub.EventPublicController.getEvent())")
-    public void statsCollectingTrigger() {
+    private static final String APPLICATION_NAME = "ewm-service";
+
+    @Pointcut(value = "execution(public * ru.practicum.main.server.controller.pub.EventPublicController.getEvent(..)) && args(.., request))")
+    public void statsCollectingTrigger(HttpServletRequest request) {
     }
 
-    @Before("statsCollectingTrigger()")
-    public void aspect(JoinPoint jp) {
+    @Before(value = "statsCollectingTrigger(request)", argNames = "jp,request")
+    public void aspect(JoinPoint jp, HttpServletRequest request) {
         try {
-            HttpServletRequest request = (HttpServletRequest) jp.getArgs()[1];
             EndpointHitDto endpointHitDto = new EndpointHitDto(
-                    "ewm-service",
+                    APPLICATION_NAME,
                     request.getRequestURI(),
                     request.getRemoteAddr(),
                     LocalDateTime.now()
