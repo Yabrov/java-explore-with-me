@@ -6,6 +6,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ru.practicum.stats.client.service.StatsServerClient;
 import ru.practicum.stats.dto.EndpointHitDto;
@@ -27,6 +28,7 @@ public class StatsServerAspect {
     public void statsCollectingTrigger(HttpServletRequest request) {
     }
 
+    @Async
     @Before(value = "statsCollectingTrigger(request)", argNames = "jp,request")
     public void aspect(JoinPoint jp, HttpServletRequest request) {
         try {
