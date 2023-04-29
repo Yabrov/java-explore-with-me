@@ -21,9 +21,9 @@ public class StatsServerAspect {
 
     private final StatsServerClient statsServerClient;
 
-    private static final String APPLICATION_NAME = "ewm-service";
+    private static final String APPLICATION_NAME = "ewm-main-service";
 
-    @Pointcut(value = "execution(public * ru.practicum.main.server.controller.pub.EventPublicController.getEvent(..)) && args(.., request))")
+    @Pointcut(value = "execution(public * ru.practicum.main.server.controller.pub.EventPublicController.*(..)) && args(.., request))")
     public void statsCollectingTrigger(HttpServletRequest request) {
     }
 
@@ -33,7 +33,7 @@ public class StatsServerAspect {
             EndpointHitDto endpointHitDto = new EndpointHitDto(
                     APPLICATION_NAME,
                     request.getRequestURI(),
-                    request.getRemoteAddr(),
+                    request.getRemoteHost(),
                     LocalDateTime.now()
             );
             EndpointHitDto response = statsServerClient.sendEndpointHit(endpointHitDto);
