@@ -67,7 +67,7 @@ public class RequestServiceImpl implements RequestService {
         try {
             return requestMapper.convert(requestRepository.saveRequest(request));
         } catch (Exception e) {
-            throw new RequestViolationException(e);
+            throw new ConstraintViolationException(e);
         }
     }
 
