@@ -6,7 +6,6 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.enums.EventState;
@@ -38,7 +37,6 @@ public class StatsServerAspect {
     public void statsGettingTrigger(Event source) {
     }
 
-    @Async
     @Before(value = "statsCollectingTrigger(request)", argNames = "jp,request")
     public void saveEndpointHitAspect(JoinPoint jp, HttpServletRequest request) {
         try {
@@ -65,5 +63,6 @@ public class StatsServerAspect {
                 false)
                 : Collections.emptyList();
         event.setViews(views.size());
+        log.info("Fetched views from stat: {}", views.size());
     }
 }
