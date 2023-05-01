@@ -137,4 +137,6 @@ public class Event extends BaseEntity<Long> {
             inverseJoinColumns = @JoinColumn(name = "compilation_id")
     )
     private Set<Compilation> compilations = new HashSet<>();
+
+    private transient long views;
 }

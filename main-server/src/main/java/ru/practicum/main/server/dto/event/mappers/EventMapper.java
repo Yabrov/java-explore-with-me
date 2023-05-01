@@ -11,34 +11,18 @@ import ru.practicum.main.server.model.entities.Category;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.entities.Location;
 import ru.practicum.main.server.model.entities.User;
-import ru.practicum.main.server.model.enums.EventState;
 import ru.practicum.main.server.model.enums.RequestState;
-import ru.practicum.stats.client.service.StatsServerClient;
-import ru.practicum.stats.dto.ViewStatsDto;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class EventMapper implements Converter<Event, EventFullDto> {
 
-    private final StatsServerClient statsServerClient;
     private final Converter<Category, CategoryDto> categoryMapper;
     private final Converter<Location, LocationDto> locationMapper;
     private final Converter<User, UserShortDto> userMapper;
 
     @Override
     public EventFullDto convert(Event source) {
-        Collection<ViewStatsDto> views = source.getState() == EventState.PUBLISHED
-                ? statsServerClient.getStats(
-                source.getPublishedOn(),
-                LocalDateTime.now(),
-                List.of("/event/" + source.getId()),
-                false)
-                : Collections.emptyList();
         long confirmedRequestsCount = source
                 .getRequests()
                 .stream()
@@ -60,7 +44,7 @@ public class EventMapper implements Converter<Event, EventFullDto> {
                 source.getRequestModeration(),
                 source.getState(),
                 source.getTitle(),
-                (long) views.size()
+                source.getViews()
         );
     }
 }
