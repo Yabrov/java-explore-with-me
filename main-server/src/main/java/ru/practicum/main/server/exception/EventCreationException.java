@@ -2,7 +2,7 @@ package ru.practicum.main.server.exception;
 
 import java.time.LocalDateTime;
 
-public class EventCreationException extends RuntimeException {
+public class EventCreationException extends EntityConflictException {
 
     private static final String ERROR_MES = "Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: %s";
 

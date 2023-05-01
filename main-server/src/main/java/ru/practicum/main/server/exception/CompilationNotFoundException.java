@@ -1,6 +1,6 @@
 package ru.practicum.main.server.exception;
 
-public class CompilationNotFoundException extends RuntimeException {
+public class CompilationNotFoundException extends EntityNotFoundException {
 
     private static final String ERROR_MES = "Compilation with id=%s was not found";
 

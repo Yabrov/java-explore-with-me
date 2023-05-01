@@ -1,6 +1,6 @@
 package ru.practicum.main.server.exception;
 
-public class RequestNotFoundException extends RuntimeException {
+public class RequestNotFoundException extends EntityNotFoundException {
 
     private static final String ERROR_MES = "Request with id=%s was not found";
 

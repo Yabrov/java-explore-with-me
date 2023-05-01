@@ -1,6 +1,6 @@
 package ru.practicum.main.server.exception;
 
-public class EventNotFoundException extends RuntimeException {
+public class EventNotFoundException extends EntityNotFoundException {
 
     private static final String ERROR_MES = "Event with id=%s was not found";
 

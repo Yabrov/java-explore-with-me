@@ -1,6 +1,6 @@
 package ru.practicum.main.server.exception;
 
-public class CategoryNotFoundException extends RuntimeException {
+public class CategoryNotFoundException extends EntityNotFoundException {
 
     private static final String ERROR_MES = "Category with id=%s was not found";
 
