@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,20 +24,12 @@ public class Location extends BaseEntity<Long> {
         this.latitude = latitude;
     }
 
-    @Column(
-            name = "lon",
-            nullable = false,
-            columnDefinition = "real"
-    )
+    @Column(name = "lon", nullable = false, columnDefinition = "real")
     private float longitude;
 
-    @Column(
-            name = "lat",
-            nullable = false,
-            columnDefinition = "real"
-    )
+    @Column(name = "lat", nullable = false, columnDefinition = "real")
     private float latitude;
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location")
     private List<Event> events = new ArrayList<>();
 }

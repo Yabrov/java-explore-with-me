@@ -2,7 +2,7 @@ package ru.practicum.main.server.repository.event;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.enums.EventState;
 import ru.practicum.main.server.model.enums.RequestState;
@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class EventRepositoryImpl implements EventRepository {
 
-    private final EventJpaRepository jpaRepository;
+    private final EventJpaRepository eventJpaRepository;
 
     @Override
     public Collection<Event> findAllEvents(Collection<Long> users,
@@ -24,7 +24,7 @@ public class EventRepositoryImpl implements EventRepository {
                                            LocalDateTime rangeStart,
                                            LocalDateTime rangeEnd,
                                            Pageable pageable) {
-        return jpaRepository.getEvents(users, states, categories, rangeStart, rangeEnd, pageable).getContent();
+        return eventJpaRepository.getEvents(users, states, categories, rangeStart, rangeEnd, pageable).getContent();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class EventRepositoryImpl implements EventRepository {
                                            LocalDateTime rangeEnd,
                                            Boolean onlyAvailable,
                                            Pageable pageable) {
-        return jpaRepository.getEvents(
+        return eventJpaRepository.getEvents(
                 text,
                 categories,
                 EventState.PUBLISHED,
@@ -49,31 +49,31 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Optional<Event> findEventById(Long eventId) {
-        return jpaRepository.findById(eventId);
+        return eventJpaRepository.findById(eventId);
     }
 
     @Override
     public Optional<Event> findPublishedEventById(Long eventId) {
-        return jpaRepository.findEventByIdAndState(eventId, EventState.PUBLISHED);
+        return eventJpaRepository.findEventByIdAndState(eventId, EventState.PUBLISHED);
     }
 
     @Override
     public Event saveEvent(Event event) {
-        return jpaRepository.save(event);
+        return eventJpaRepository.save(event);
     }
 
     @Override
     public Collection<Event> findAllUsersEvents(Long userId, Pageable pageable) {
-        return jpaRepository.findAllByInitiator_Id(userId, pageable).getContent();
+        return eventJpaRepository.findAllByInitiator_Id(userId, pageable).getContent();
     }
 
     @Override
     public Optional<Event> findUsersEventById(Long userId, Long eventId) {
-        return jpaRepository.findEventByIdAndInitiator_Id(eventId, userId);
+        return eventJpaRepository.findEventByIdAndInitiator_Id(eventId, userId);
     }
 
     @Override
     public Collection<Event> findAllEventsByIds(Collection<Long> ids) {
-        return jpaRepository.findAllByIdIn(ids);
+        return eventJpaRepository.findAllByIdIn(ids);
     }
 }

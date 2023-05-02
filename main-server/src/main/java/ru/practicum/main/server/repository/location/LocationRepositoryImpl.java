@@ -1,24 +1,24 @@
 package ru.practicum.main.server.repository.location;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.Location;
 
 import java.util.Optional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class LocationRepositoryImpl implements LocationRepository {
 
-    private final LocationJpaRepository jpaRepository;
+    private final LocationJpaRepository locationJpaRepository;
 
     @Override
     public Optional<Location> findLocationByCoord(float lon, float lat) {
-        return jpaRepository.findByLongitudeAndLatitude(lon, lat);
+        return locationJpaRepository.findByLongitudeAndLatitude(lon, lat);
     }
 
     @Override
     public Location saveLocation(Location location) {
-        return jpaRepository.save(location);
+        return locationJpaRepository.save(location);
     }
 }

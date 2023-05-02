@@ -18,8 +18,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -28,6 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final Converter<Category, CategoryDto> categoryMapper;
     private final PageBuilder pageBuilder;
 
+    @Transactional(readOnly = true)
     @Override
     public CategoryDto getCategory(Long categoryId) {
         Category category = categoryRepository.findCategoryById(categoryId)
@@ -35,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.convert(category);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<CategoryDto> getAllCategories(Integer from, Integer size) {
         Pageable pageable = pageBuilder.build(from, size, null);
@@ -45,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public CategoryDto createCategory(NewCategoryDto categoryDto) {
         try {
@@ -56,7 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-    @Transactional
     @Override
     public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
         try {
@@ -67,7 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-    @Transactional
     @Override
     public void deleteCategory(Long categoryId) {
         Category category = categoryRepository.findCategoryById(categoryId)

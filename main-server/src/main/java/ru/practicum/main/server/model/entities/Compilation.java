@@ -37,10 +37,6 @@ public class Compilation extends BaseEntity<Long> {
     @Column(name = "pinned", nullable = false)
     private Boolean pinned;
 
-    @Column(
-            name = "title",
-            unique = true,
-            nullable = false
-    )
+    @Column(name = "title", unique = true, nullable = false)
     private String title;
 }

@@ -2,40 +2,40 @@ package ru.practicum.main.server.repository.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.Category;
 
 import java.util.Collection;
 import java.util.Optional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class CategoryRepositoryImpl implements CategoryRepository {
 
-    private final CategoryJpaRepository jpaRepository;
+    private final CategoryJpaRepository categoryJpaRepository;
 
     @Override
     public Optional<Category> findCategoryById(Long categoryId) {
-        return jpaRepository.findById(categoryId);
+        return categoryJpaRepository.findById(categoryId);
     }
 
     @Override
     public Optional<Category> findCategoryByIdWithEvents(Long categoryId) {
-        return jpaRepository.findByIdWithEvents(categoryId);
+        return categoryJpaRepository.findByIdWithEvents(categoryId);
     }
 
     @Override
     public Collection<Category> findAllCategories(Pageable pageable) {
-        return jpaRepository.findAll(pageable).getContent();
+        return categoryJpaRepository.findAll(pageable).getContent();
     }
 
     @Override
     public Category saveCategory(Category category) {
-        return jpaRepository.save(category);
+        return categoryJpaRepository.save(category);
     }
 
     @Override
     public void deleteCategory(Long categoryId) {
-        jpaRepository.deleteById(categoryId);
+        categoryJpaRepository.deleteById(categoryId);
     }
 }

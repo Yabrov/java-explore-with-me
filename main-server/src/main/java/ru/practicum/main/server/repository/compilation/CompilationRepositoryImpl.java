@@ -2,35 +2,35 @@ package ru.practicum.main.server.repository.compilation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.Compilation;
 
 import java.util.Collection;
 import java.util.Optional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class CompilationRepositoryImpl implements CompilationRepository {
 
-    private final CompilationJpaRepository jpaRepository;
+    private final CompilationJpaRepository compilationJpaRepository;
 
     @Override
     public Compilation saveCompilation(Compilation compilation) {
-        return jpaRepository.save(compilation);
+        return compilationJpaRepository.save(compilation);
     }
 
     @Override
     public Optional<Compilation> findCompilationById(Long compilationId) {
-        return jpaRepository.findById(compilationId);
+        return compilationJpaRepository.findById(compilationId);
     }
 
     @Override
     public void deleteCompilation(Compilation compilation) {
-        jpaRepository.delete(compilation);
+        compilationJpaRepository.delete(compilation);
     }
 
     @Override
     public Collection<Compilation> findAllCompilations(Boolean pinned, Pageable pageable) {
-        return jpaRepository.findAllCompilations(pinned, pageable).getContent();
+        return compilationJpaRepository.findAllCompilations(pinned, pageable).getContent();
     }
 }

@@ -15,7 +15,13 @@ import java.time.LocalDateTime;
 @Entity
 @DynamicUpdate
 @NoArgsConstructor
-@Table(name = "requests")
+@Table(
+        name = "requests",
+        indexes = {
+                @Index(name = "event_id_idx", columnList = "event_id"),
+                @Index(name = "user_id_idx", columnList = "requester_id")
+        }
+)
 public class ParticipationRequest extends BaseEntity<Long> {
 
     public ParticipationRequest(Long id,
@@ -27,11 +33,7 @@ public class ParticipationRequest extends BaseEntity<Long> {
         this.status = RequestState.PENDING;
     }
 
-    @Column(
-            name = "created",
-            nullable = false,
-            columnDefinition = "timestamp"
-    )
+    @Column(name = "created", nullable = false, columnDefinition = "timestamp")
     @CreationTimestamp
     private LocalDateTime created;
 
@@ -43,11 +45,7 @@ public class ParticipationRequest extends BaseEntity<Long> {
     @JoinColumn(name = "requester_id", nullable = false)
     private User requester;
 
-    @Column(
-            name = "status",
-            length = 10,
-            nullable = false
-    )
+    @Column(name = "status", length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private RequestState status;
 }

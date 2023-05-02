@@ -2,40 +2,40 @@ package ru.practicum.main.server.repository.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.User;
 
 import java.util.Collection;
 import java.util.Optional;
 
-@Repository
+@Service
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    private final UserJpaRepository jpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     @Override
     public Optional<User> getUserById(Long userId) {
-        return jpaRepository.findById(userId);
+        return userJpaRepository.findById(userId);
     }
 
     @Override
     public User saveUser(User user) {
-        return jpaRepository.save(user);
+        return userJpaRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        jpaRepository.deleteById(userId);
+        userJpaRepository.deleteById(userId);
     }
 
     @Override
     public Collection<User> findAllUsers(Pageable pageable) {
-        return jpaRepository.findAll(pageable).getContent();
+        return userJpaRepository.findAll(pageable).getContent();
     }
 
     @Override
     public Collection<User> findAllUsersByIds(Collection<Long> ids) {
-        return jpaRepository.findAllByIdIn(ids);
+        return userJpaRepository.findAllByIdIn(ids);
     }
 }
