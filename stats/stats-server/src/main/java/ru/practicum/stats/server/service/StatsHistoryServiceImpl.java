@@ -35,7 +35,7 @@ public class StatsHistoryServiceImpl implements StatsHistoryService {
                                              Collection<String> uris,
                                              Boolean uniqueIPsOnly) {
         Collection<ViewStats> history = new LinkedList<>();
-        if (uris.isEmpty()) {
+        if (uris == null || uris.isEmpty()) {
             history.addAll(uniqueIPsOnly.equals(Boolean.TRUE)
                     ? statsHistoryRepository.getStatsInPeriodWithUniqIps(from, to)
                     : statsHistoryRepository.getStatsInPeriod(from, to));
