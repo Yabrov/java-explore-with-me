@@ -6,7 +6,7 @@ import ru.practicum.main.server.model.entities.Location;
 
 public interface LocationService {
 
-    Location createLocation(Location location);
+    Location createLocation(Location location, boolean checkZone);
 
     AllowedLocationDto addAllowedLocation(NewLocationRequest request);
 }

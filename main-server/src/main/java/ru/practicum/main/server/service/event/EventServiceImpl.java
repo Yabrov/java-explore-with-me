@@ -121,16 +121,17 @@ public class EventServiceImpl implements EventService {
                 }
             }
         }
+        if (request.getParticipantLimit() != null) {
+            event.setParticipantLimit(request.getParticipantLimit());
+        }
         if (request.getLocation() != null) {
+            boolean checkZone = event.getParticipantLimit() > 1000;
             Location location = locationService
-                    .createLocation(locationDtoMapper.convert(request.getLocation()));
+                    .createLocation(locationDtoMapper.convert(request.getLocation()), checkZone);
             event.setLocation(location);
         }
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
-        }
-        if (request.getParticipantLimit() != null) {
-            event.setParticipantLimit(request.getParticipantLimit());
         }
         if (request.getTitle() != null) {
             event.setTitle(request.getTitle());
@@ -180,16 +181,17 @@ public class EventServiceImpl implements EventService {
                 event.setEventDate(request.getEventDate());
             }
         }
+        if (request.getParticipantLimit() != null) {
+            event.setParticipantLimit(request.getParticipantLimit());
+        }
         if (request.getLocation() != null) {
+            boolean checkZone = event.getParticipantLimit() > 1000;
             Location location = locationService
-                    .createLocation(locationDtoMapper.convert(request.getLocation()));
+                    .createLocation(locationDtoMapper.convert(request.getLocation()), checkZone);
             event.setLocation(location);
         }
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
-        }
-        if (request.getParticipantLimit() != null) {
-            event.setParticipantLimit(request.getParticipantLimit());
         }
         if (request.getTitle() != null) {
             event.setTitle(request.getTitle());
@@ -222,7 +224,8 @@ public class EventServiceImpl implements EventService {
         if (Duration.between(event.getCreatedOn(), event.getEventDate()).toHours() < 2L) {
             throw new EventCreationException(event.getEventDate());
         }
-        Location location = locationService.createLocation(event.getLocation());
+        boolean checkZone = event.getParticipantLimit() > 1000;
+        Location location = locationService.createLocation(event.getLocation(), checkZone);
         event.getLocation().setId(location.getId());
         event.setInitiator(new User(userId, null, null));
         return eventMapper.convert(eventRepository.saveEvent(event));

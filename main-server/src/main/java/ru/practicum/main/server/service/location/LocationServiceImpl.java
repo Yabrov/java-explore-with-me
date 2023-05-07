@@ -23,14 +23,18 @@ public class LocationServiceImpl implements LocationService {
 
     @Transactional
     @Override
-    public Location createLocation(Location location) {
+    public Location createLocation(Location location, boolean checkZone) {
         try {
-            if (locationRepository.isLocationInsideAllowedZone(location)) {
-                log.info("Location is in allowed zone");
-                return locationRepository.saveLocation(location);
+            if (checkZone) {
+                if (locationRepository.isLocationInsideAllowedZone(location)) {
+                    log.info("Location is in allowed zone");
+                    return locationRepository.saveLocation(location);
+                } else {
+                    log.error("Location is beyond allowed zone");
+                    throw new LocationCreationException(location);
+                }
             } else {
-                log.error("Location is beyond allowed zone");
-                throw new LocationCreationException(location);
+                return locationRepository.saveLocation(location);
             }
         } catch (Exception e) {
             log.info("{} already exists", location);
