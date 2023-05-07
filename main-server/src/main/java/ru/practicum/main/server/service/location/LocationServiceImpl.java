@@ -3,6 +3,7 @@ package ru.practicum.main.server.service.location;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.server.dto.location.AllowedLocationDto;
@@ -21,21 +22,19 @@ public class LocationServiceImpl implements LocationService {
     private final Converter<AllowedLocation, AllowedLocationDto> allowedLocationMapper;
     private final Converter<NewLocationRequest, AllowedLocation> locationRequestMapper;
 
-    @Transactional
     @Override
     public Location createLocation(Location location, boolean checkZone) {
-        try {
-            if (checkZone && !locationRepository.isLocationInsideAllowedZone(location)) {
-                log.error("Location is beyond allowed zone");
-                throw new LocationCreationException(location);
-            } else {
+        if (checkZone && !locationRepository.isLocationInsideAllowedZone(location)) {
+            log.error("Location is beyond allowed zone");
+            throw new LocationCreationException(location);
+        } else {
+            try {
                 return locationRepository.saveLocation(location);
+            } catch (DataIntegrityViolationException e) {
+                return locationRepository
+                        .findLocationByCoord(location.getLongitude(), location.getLatitude())
+                        .get();
             }
-        } catch (Exception e) {
-            log.info("{} already exists", location);
-            return locationRepository
-                    .findLocationByCoord(location.getLongitude(), location.getLatitude())
-                    .orElse(location);
         }
     }
 

@@ -2,6 +2,7 @@ package ru.practicum.main.server.repository.location;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.server.model.entities.AllowedLocation;
 import ru.practicum.main.server.model.entities.Location;
 
@@ -15,11 +16,13 @@ public class LocationRepositoryImpl implements LocationRepository {
     private final LocationJpaRepository locationJpaRepository;
     private final AllowedLocationJpaRepository allowedLocationJpaRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Location> findLocationByCoord(float lon, float lat) {
         return locationJpaRepository.findByLongitudeAndLatitude(lon, lat);
     }
 
+    @Transactional
     @Override
     public Location saveLocation(Location location) {
         return locationJpaRepository.save(location);
@@ -30,6 +33,7 @@ public class LocationRepositoryImpl implements LocationRepository {
         return allowedLocationJpaRepository.save(allowedLocation);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Boolean isLocationInsideAllowedZone(Location location) {
         return allowedLocationJpaRepository

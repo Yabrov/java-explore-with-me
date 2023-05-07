@@ -217,7 +217,6 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public EventFullDto createEvent(Long userId, NewEventDto eventDto) {
         Event event = newEventDtoMapper.convert(eventDto);
