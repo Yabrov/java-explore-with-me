@@ -25,14 +25,9 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Location createLocation(Location location, boolean checkZone) {
         try {
-            if (checkZone) {
-                if (locationRepository.isLocationInsideAllowedZone(location)) {
-                    log.info("Location is in allowed zone");
-                    return locationRepository.saveLocation(location);
-                } else {
-                    log.error("Location is beyond allowed zone");
-                    throw new LocationCreationException(location);
-                }
+            if (checkZone && !locationRepository.isLocationInsideAllowedZone(location)) {
+                log.error("Location is beyond allowed zone");
+                throw new LocationCreationException(location);
             } else {
                 return locationRepository.saveLocation(location);
             }

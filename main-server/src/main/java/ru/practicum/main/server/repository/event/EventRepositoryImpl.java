@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.enums.EventState;
 import ru.practicum.main.server.model.enums.RequestState;
+import ru.practicum.main.server.repository.location.LocationJpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class EventRepositoryImpl implements EventRepository {
 
     private final EventJpaRepository eventJpaRepository;
+    private final LocationJpaRepository locationJpaRepository;
 
     @Override
     public Collection<Event> findAllEvents(Collection<Long> users,
@@ -75,5 +77,11 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Collection<Event> findAllEventsByIds(Collection<Long> ids) {
         return eventJpaRepository.findAllByIdIn(ids);
+    }
+
+    @Override
+    public Collection<Event> findAllEventsInsideZone(float longitude, float latitude, float radius) {
+        Collection<Long> locationIds = locationJpaRepository.findAllLocationsInsideZone(longitude, latitude, radius);
+        return eventJpaRepository.findAllByLocation_IdIn(locationIds);
     }
 }

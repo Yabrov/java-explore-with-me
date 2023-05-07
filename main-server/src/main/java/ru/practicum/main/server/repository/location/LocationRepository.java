@@ -3,6 +3,7 @@ package ru.practicum.main.server.repository.location;
 import ru.practicum.main.server.model.entities.AllowedLocation;
 import ru.practicum.main.server.model.entities.Location;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface LocationRepository {
@@ -14,4 +15,6 @@ public interface LocationRepository {
     AllowedLocation saveAllowedLocation(AllowedLocation allowedLocation);
 
     Boolean isLocationInsideAllowedZone(Location location);
+
+    Collection<Long> findAllLocationsInsideZone(float longitude, float latitude, float radius);
 }

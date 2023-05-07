@@ -40,4 +40,12 @@ public class EventPublicController {
     public EventFullDto getEvent(@PathVariable Long id, HttpServletRequest request) {
         return eventService.getPublishedEventById(id);
     }
+
+    @GetMapping("/events/locations")
+    public Collection<EventFullDto> getEventsInsideZone(@RequestParam float longitude,
+                                                        @RequestParam float latitude,
+                                                        @RequestParam float radius,
+                                                        HttpServletRequest request) {
+        return eventService.findAllEventsInsideZone(longitude, latitude, radius);
+    }
 }

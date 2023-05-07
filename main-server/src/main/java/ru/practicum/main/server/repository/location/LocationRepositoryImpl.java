@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.main.server.model.entities.AllowedLocation;
 import ru.practicum.main.server.model.entities.Location;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -33,5 +34,10 @@ public class LocationRepositoryImpl implements LocationRepository {
     public Boolean isLocationInsideAllowedZone(Location location) {
         return allowedLocationJpaRepository
                 .isLocationInsideAllowedZone(location.getLongitude(), location.getLatitude()) > 0;
+    }
+
+    @Override
+    public Collection<Long> findAllLocationsInsideZone(float longitude, float latitude, float radius) {
+        return locationJpaRepository.findAllLocationsInsideZone(longitude, latitude, radius);
     }
 }

@@ -300,4 +300,13 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
         return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
     }
+
+    @Override
+    public Collection<EventFullDto> findAllEventsInsideZone(float longitude, float latitude, float radius) {
+        return eventRepository
+                .findAllEventsInsideZone(longitude, latitude, radius)
+                .stream()
+                .map(eventMapper::convert)
+                .collect(Collectors.toList());
+    }
 }
