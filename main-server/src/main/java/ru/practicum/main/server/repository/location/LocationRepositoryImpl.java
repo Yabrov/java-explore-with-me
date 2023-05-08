@@ -44,4 +44,14 @@ public class LocationRepositoryImpl implements LocationRepository {
     public Collection<Long> findAllLocationsInsideZone(float longitude, float latitude, float radius) {
         return locationJpaRepository.findAllLocationsInsideZone(longitude, latitude, radius);
     }
+
+    @Override
+    public Collection<AllowedLocation> findAllAllowedLocations() {
+        return allowedLocationJpaRepository.findAll();
+    }
+
+    @Override
+    public Optional<AllowedLocation> findAllowedLocationById(Long id) {
+        return allowedLocationJpaRepository.findById(id);
+    }
 }

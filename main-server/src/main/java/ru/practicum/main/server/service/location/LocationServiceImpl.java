@@ -9,9 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.server.dto.location.AllowedLocationDto;
 import ru.practicum.main.server.dto.location.NewLocationRequest;
 import ru.practicum.main.server.exception.LocationCreationException;
+import ru.practicum.main.server.exception.LocationNotFoundException;
 import ru.practicum.main.server.model.entities.AllowedLocation;
 import ru.practicum.main.server.model.entities.Location;
 import ru.practicum.main.server.repository.location.LocationRepository;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -43,5 +47,23 @@ public class LocationServiceImpl implements LocationService {
     public AllowedLocationDto addAllowedLocation(NewLocationRequest request) {
         AllowedLocation allowedLocation = locationRequestMapper.convert(request);
         return allowedLocationMapper.convert(locationRepository.saveAllowedLocation(allowedLocation));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Collection<AllowedLocationDto> getAllAllowedLocations() {
+        return locationRepository
+                .findAllAllowedLocations()
+                .stream()
+                .map(allowedLocationMapper::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public AllowedLocationDto getAllowedLocationById(Long id) {
+        AllowedLocation location = locationRepository.findAllowedLocationById(id)
+                .orElseThrow(() -> new LocationNotFoundException(id));
+        return allowedLocationMapper.convert(location);
     }
 }

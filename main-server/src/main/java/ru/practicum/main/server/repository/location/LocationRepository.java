@@ -17,4 +17,8 @@ public interface LocationRepository {
     Boolean isLocationInsideAllowedZone(Location location);
 
     Collection<Long> findAllLocationsInsideZone(float longitude, float latitude, float radius);
+
+    Collection<AllowedLocation> findAllAllowedLocations();
+
+    Optional<AllowedLocation> findAllowedLocationById(Long id);
 }
