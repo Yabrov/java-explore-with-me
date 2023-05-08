@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.enums.EventState;
 import ru.practicum.main.server.model.enums.RequestState;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
-@Repository
 public interface EventJpaRepository extends JpaRepository<Event, Long> {
 
     @Query("SELECT e FROM Event e " +
