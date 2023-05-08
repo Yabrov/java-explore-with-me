@@ -100,13 +100,13 @@ public class EventServiceImpl implements EventService {
     public EventFullDto adminUpdateEvent(Long eventId, UpdateEventAdminRequest request) {
         Event event = eventRepository.findEventById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-        if (request.getAnnotation() != null) {
+        if (request.getAnnotation() != null && !request.getAnnotation().isBlank()) {
             event.setAnnotation(request.getAnnotation());
         }
         if (request.getCategoryId() != null) {
             event.setCategory(new Category(request.getCategoryId(), null));
         }
-        if (request.getDescription() != null) {
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
             event.setDescription(request.getDescription());
         }
         if (request.getEventDate() != null) {
@@ -133,7 +133,7 @@ public class EventServiceImpl implements EventService {
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
         }
-        if (request.getTitle() != null) {
+        if (request.getTitle() != null && !request.getTitle().isBlank()) {
             event.setTitle(request.getTitle());
         }
         if (request.getStateAction() != null) {
@@ -165,13 +165,13 @@ public class EventServiceImpl implements EventService {
         if (event.getState() == EventState.PUBLISHED) {
             throw new EventUpdateException("Only pending or canceled events can be changed");
         }
-        if (request.getAnnotation() != null) {
+        if (request.getAnnotation() != null && !request.getAnnotation().isBlank()) {
             event.setAnnotation(request.getAnnotation());
         }
         if (request.getCategoryId() != null) {
             event.setCategory(new Category(request.getCategoryId(), null));
         }
-        if (request.getDescription() != null) {
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
             event.setDescription(request.getDescription());
         }
         if (request.getEventDate() != null) {
@@ -193,7 +193,7 @@ public class EventServiceImpl implements EventService {
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
         }
-        if (request.getTitle() != null) {
+        if (request.getTitle() != null && !request.getTitle().isBlank()) {
             event.setTitle(request.getTitle());
         }
         if (request.getStateAction() != null) {
