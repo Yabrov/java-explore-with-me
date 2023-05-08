@@ -15,21 +15,20 @@ public class NewLocationRequest {
 
     @NotNull
     @JsonProperty(value = "lon", required = true)
-    private float longitude;
+    private Float longitude;
 
     @NotNull
     @JsonProperty(value = "lat", required = true)
-    private float latitude;
+    private Float latitude;
 
     @NotNull
     @JsonProperty(value = "rad", required = true)
-    private float radius;
+    private Float radius;
 
     @NotNull
     @JsonProperty(value = "type", required = true)
     private LocationType type;
 
-    @NotNull
     @NotBlank
     @JsonProperty(value = "name", required = true)
     private String name;
