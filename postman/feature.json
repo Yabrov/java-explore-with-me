@@ -411,6 +411,153 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Получение существующей разрешенной локации по id",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+              "    pm.response.to.have.status(200);  \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "\r",
+              "const target = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Объект разрешенной зоны должен содержать поля: id, lon, lat, type, name\", function () {\r",
+              "pm.expect(target).to.have.property('id');\r",
+              "pm.expect(target).to.have.property('lon');\r",
+              "pm.expect(target).to.have.property('lat');\r",
+              "pm.expect(target).to.have.property('rad');\r",
+              "pm.expect(target).to.have.property('type');\r",
+              "pm.expect(target).to.have.property('name');\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/locations/allowed/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "locations",
+            "allowed",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получение несуществующей разрешенной локации по id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
+              "    pm.response.to.have.status(404);\r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/locations/allowed/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "locations",
+            "allowed",
+            ":id"
+          ],
+          "variable": [
+            {
+              "key": "id",
+              "value": "9999"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Получение списка всех разрешенных локаций",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+              "    pm.response.to.be.ok;    \r",
+              "    pm.response.to.be.withBody;\r",
+              "    pm.response.to.be.json;\r",
+              "});\r",
+              "const target = pm.response.json();\r",
+              "console.log(target)\r",
+              "pm.test(\"Разрешенная локация должна содержать поля: id, lon, lat, rad, type, name\", function () {\r",
+              "pm.expect(target[0]).to.have.property('id');\r",
+              "pm.expect(target[0]).to.have.property('lon');\r",
+              "pm.expect(target[0]).to.have.property('lat');\r",
+              "pm.expect(target[0]).to.have.property('rad');\r",
+              "pm.expect(target[0]).to.have.property('type');\r",
+              "pm.expect(target[0]).to.have.property('name');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"В ответе должна быть 1 запись\", function () {\r",
+              "    pm.expect(target.length).to.equal(1);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/locations/allowed",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "locations",
+            "allowed"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "event": [
