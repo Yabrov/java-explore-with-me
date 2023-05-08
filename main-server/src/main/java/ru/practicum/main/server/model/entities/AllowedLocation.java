@@ -14,21 +14,6 @@ import javax.persistence.*;
 @Table(name = "allowed_locations")
 public class AllowedLocation extends BaseEntity<Long> {
 
-    public AllowedLocation(Long id,
-                           float longitude,
-                           float latitude,
-                           float radius,
-                           LocationType type,
-                           String name
-    ) {
-        this.id = id;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.radius = radius;
-        this.type = type;
-        this.name = name;
-    }
-
     @Column(name = "lon", nullable = false, columnDefinition = "real")
     private float longitude;
 
@@ -44,4 +29,19 @@ public class AllowedLocation extends BaseEntity<Long> {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    public AllowedLocation(Long id,
+                           float longitude,
+                           float latitude,
+                           float radius,
+                           LocationType type,
+                           String name
+    ) {
+        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.radius = radius;
+        this.type = type;
+        this.name = name;
+    }
 }

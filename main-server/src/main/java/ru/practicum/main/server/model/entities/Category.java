@@ -20,14 +20,14 @@ import java.util.List;
 @Table(name = "categories")
 public class Category extends BaseEntity<Long> {
 
-    public Category(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "category")
     private List<Event> events = new ArrayList<>();
+
+    public Category(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

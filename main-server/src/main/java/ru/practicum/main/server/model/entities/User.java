@@ -18,12 +18,6 @@ import java.util.List;
 @Table(name = "users")
 public class User extends BaseEntity<Long> {
 
-    public User(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -35,4 +29,10 @@ public class User extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "requester")
     private List<ParticipationRequest> requests = new ArrayList<>();
+
+    public User(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 }
