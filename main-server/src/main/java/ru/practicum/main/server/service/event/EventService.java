@@ -47,4 +47,6 @@ public interface EventService {
     EventRequestStatusUpdateResult updateUserEventRequests(EventRequestStatusUpdateRequest updateRequest,
                                                            Long userId,
                                                            Long eventId);
+
+    Collection<EventFullDto> findAllEventsInsideZone(float longitude, float latitude, float radius);
 }

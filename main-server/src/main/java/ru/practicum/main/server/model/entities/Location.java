@@ -18,12 +18,6 @@ import java.util.List;
 @Table(name = "locations")
 public class Location extends BaseEntity<Long> {
 
-    public Location(Long id, float longitude, float latitude) {
-        this.id = id;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
-
     @Column(name = "lon", nullable = false, columnDefinition = "real")
     private float longitude;
 
@@ -32,4 +26,10 @@ public class Location extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "location")
     private List<Event> events = new ArrayList<>();
+
+    public Location(Long id, float longitude, float latitude) {
+        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 }

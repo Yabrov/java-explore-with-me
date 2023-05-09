@@ -2,6 +2,7 @@ package ru.practicum.main.server.controller.pub;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,9 +12,11 @@ import ru.practicum.main.server.model.enums.EventSort;
 import ru.practicum.main.server.service.event.EventService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class EventPublicController {
@@ -39,5 +42,13 @@ public class EventPublicController {
     @GetMapping("/events/{id}")
     public EventFullDto getEvent(@PathVariable Long id, HttpServletRequest request) {
         return eventService.getPublishedEventById(id);
+    }
+
+    @GetMapping("/events/locations")
+    public Collection<EventFullDto> getEventsInsideZone(@RequestParam @NotNull Float longitude,
+                                                        @RequestParam @NotNull Float latitude,
+                                                        @RequestParam @NotNull Float radius,
+                                                        HttpServletRequest request) {
+        return eventService.findAllEventsInsideZone(longitude, latitude, radius);
     }
 }

@@ -28,32 +28,6 @@ import java.util.Set;
 )
 public class Event extends BaseEntity<Long> {
 
-    public Event(Long id,
-                 String annotation,
-                 Category category,
-                 String description,
-                 LocalDateTime eventDate,
-                 User initiator,
-                 Location location,
-                 Boolean paid,
-                 Integer participantLimit,
-                 Boolean requestModeration,
-                 String title) {
-        this.id = id;
-        this.annotation = annotation;
-        this.category = category;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.initiator = initiator;
-        this.location = location;
-        this.paid = paid;
-        this.participantLimit = participantLimit;
-        this.requestModeration = requestModeration;
-        this.createdOn = LocalDateTime.now();
-        this.state = EventState.PENDING;
-        this.title = title;
-    }
-
     @Column(name = "annotation", length = 2000, nullable = false)
     private String annotation;
 
@@ -109,4 +83,30 @@ public class Event extends BaseEntity<Long> {
     private Set<Compilation> compilations = new HashSet<>();
 
     private transient long views;
+
+    public Event(Long id,
+                 String annotation,
+                 Category category,
+                 String description,
+                 LocalDateTime eventDate,
+                 User initiator,
+                 Location location,
+                 Boolean paid,
+                 Integer participantLimit,
+                 Boolean requestModeration,
+                 String title) {
+        this.id = id;
+        this.annotation = annotation;
+        this.category = category;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.initiator = initiator;
+        this.location = location;
+        this.paid = paid;
+        this.participantLimit = participantLimit;
+        this.requestModeration = requestModeration;
+        this.createdOn = LocalDateTime.now();
+        this.state = EventState.PENDING;
+        this.title = title;
+    }
 }

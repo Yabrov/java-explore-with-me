@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.practicum.main.server.dto.error.ApiError;
-import ru.practicum.main.server.exception.ConstraintViolationException;
-import ru.practicum.main.server.exception.EntityConflictException;
-import ru.practicum.main.server.exception.EntityNotFoundException;
-import ru.practicum.main.server.exception.RequestWrongStateException;
+import ru.practicum.main.server.exception.*;
 
 @RestControllerAdvice
 public class GenericExceptionHandler {
@@ -46,6 +43,7 @@ public class GenericExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler({
+            LocationCreationException.class,
             RequestWrongStateException.class,
             MethodArgumentNotValidException.class,
             MethodArgumentTypeMismatchException.class

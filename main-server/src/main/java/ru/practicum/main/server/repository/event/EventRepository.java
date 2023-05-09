@@ -36,4 +36,6 @@ public interface EventRepository {
     Optional<Event> findUsersEventById(Long userId, Long eventId);
 
     Collection<Event> findAllEventsByIds(Collection<Long> ids);
+
+    Collection<Event> findAllEventsInsideZone(float longitude, float latitude, float radius);
 }

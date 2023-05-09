@@ -24,15 +24,6 @@ import java.time.LocalDateTime;
 )
 public class ParticipationRequest extends BaseEntity<Long> {
 
-    public ParticipationRequest(Long id,
-                                Event event,
-                                User requester) {
-        this.id = id;
-        this.event = event;
-        this.requester = requester;
-        this.status = RequestState.PENDING;
-    }
-
     @Column(name = "created", nullable = false, columnDefinition = "timestamp")
     @CreationTimestamp
     private LocalDateTime created;
@@ -48,4 +39,13 @@ public class ParticipationRequest extends BaseEntity<Long> {
     @Column(name = "status", length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private RequestState status;
+
+    public ParticipationRequest(Long id,
+                                Event event,
+                                User requester) {
+        this.id = id;
+        this.event = event;
+        this.requester = requester;
+        this.status = RequestState.PENDING;
+    }
 }

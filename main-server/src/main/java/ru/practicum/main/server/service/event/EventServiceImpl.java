@@ -100,13 +100,13 @@ public class EventServiceImpl implements EventService {
     public EventFullDto adminUpdateEvent(Long eventId, UpdateEventAdminRequest request) {
         Event event = eventRepository.findEventById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-        if (request.getAnnotation() != null) {
+        if (request.getAnnotation() != null && !request.getAnnotation().isBlank()) {
             event.setAnnotation(request.getAnnotation());
         }
         if (request.getCategoryId() != null) {
             event.setCategory(new Category(request.getCategoryId(), null));
         }
-        if (request.getDescription() != null) {
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
             event.setDescription(request.getDescription());
         }
         if (request.getEventDate() != null) {
@@ -121,18 +121,19 @@ public class EventServiceImpl implements EventService {
                 }
             }
         }
+        if (request.getParticipantLimit() != null) {
+            event.setParticipantLimit(request.getParticipantLimit());
+        }
         if (request.getLocation() != null) {
+            boolean checkZone = event.getParticipantLimit() > 1000;
             Location location = locationService
-                    .createLocation(locationDtoMapper.convert(request.getLocation()));
+                    .createLocation(locationDtoMapper.convert(request.getLocation()), checkZone);
             event.setLocation(location);
         }
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
         }
-        if (request.getParticipantLimit() != null) {
-            event.setParticipantLimit(request.getParticipantLimit());
-        }
-        if (request.getTitle() != null) {
+        if (request.getTitle() != null && !request.getTitle().isBlank()) {
             event.setTitle(request.getTitle());
         }
         if (request.getStateAction() != null) {
@@ -164,13 +165,13 @@ public class EventServiceImpl implements EventService {
         if (event.getState() == EventState.PUBLISHED) {
             throw new EventUpdateException("Only pending or canceled events can be changed");
         }
-        if (request.getAnnotation() != null) {
+        if (request.getAnnotation() != null && !request.getAnnotation().isBlank()) {
             event.setAnnotation(request.getAnnotation());
         }
         if (request.getCategoryId() != null) {
             event.setCategory(new Category(request.getCategoryId(), null));
         }
-        if (request.getDescription() != null) {
+        if (request.getDescription() != null && !request.getDescription().isBlank()) {
             event.setDescription(request.getDescription());
         }
         if (request.getEventDate() != null) {
@@ -180,18 +181,19 @@ public class EventServiceImpl implements EventService {
                 event.setEventDate(request.getEventDate());
             }
         }
+        if (request.getParticipantLimit() != null) {
+            event.setParticipantLimit(request.getParticipantLimit());
+        }
         if (request.getLocation() != null) {
+            boolean checkZone = event.getParticipantLimit() > 1000;
             Location location = locationService
-                    .createLocation(locationDtoMapper.convert(request.getLocation()));
+                    .createLocation(locationDtoMapper.convert(request.getLocation()), checkZone);
             event.setLocation(location);
         }
         if (request.getPaid() != null) {
             event.setPaid(request.getPaid());
         }
-        if (request.getParticipantLimit() != null) {
-            event.setParticipantLimit(request.getParticipantLimit());
-        }
-        if (request.getTitle() != null) {
+        if (request.getTitle() != null && !request.getTitle().isBlank()) {
             event.setTitle(request.getTitle());
         }
         if (request.getStateAction() != null) {
@@ -215,14 +217,14 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public EventFullDto createEvent(Long userId, NewEventDto eventDto) {
         Event event = newEventDtoMapper.convert(eventDto);
         if (Duration.between(event.getCreatedOn(), event.getEventDate()).toHours() < 2L) {
             throw new EventCreationException(event.getEventDate());
         }
-        Location location = locationService.createLocation(event.getLocation());
+        boolean checkZone = event.getParticipantLimit() > 1000;
+        Location location = locationService.createLocation(event.getLocation(), checkZone);
         event.getLocation().setId(location.getId());
         event.setInitiator(new User(userId, null, null));
         return eventMapper.convert(eventRepository.saveEvent(event));
@@ -296,5 +298,14 @@ public class EventServiceImpl implements EventService {
                 .map(requestMapper::convert)
                 .collect(Collectors.toList());
         return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
+    }
+
+    @Override
+    public Collection<EventFullDto> findAllEventsInsideZone(float longitude, float latitude, float radius) {
+        return eventRepository
+                .findAllEventsInsideZone(longitude, latitude, radius)
+                .stream()
+                .map(eventMapper::convert)
+                .collect(Collectors.toList());
     }
 }
