@@ -15,4 +15,8 @@ public interface LocationService {
     Collection<AllowedLocationDto> getAllAllowedLocations();
 
     AllowedLocationDto getAllowedLocationById(Long id);
+
+    AllowedLocationDto updateAllowedLocation(Long id, AllowedLocationDto dto);
+
+    void deleteAllowedLocation(Long id);
 }

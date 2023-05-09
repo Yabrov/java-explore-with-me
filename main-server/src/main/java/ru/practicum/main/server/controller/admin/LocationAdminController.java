@@ -21,4 +21,16 @@ public class LocationAdminController {
     public AllowedLocationDto addAllowedLocation(@RequestBody @Valid NewLocationRequest locationRequest) {
         return locationService.addAllowedLocation(locationRequest);
     }
+
+    @PatchMapping("/locations/{id}")
+    public AllowedLocationDto updateAllowedLocation(@PathVariable Long id,
+                                                    @RequestBody AllowedLocationDto dto) {
+        return locationService.updateAllowedLocation(id, dto);
+    }
+
+    @DeleteMapping("/locations/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllowedLocation(@PathVariable Long id) {
+        locationService.deleteAllowedLocation(id);
+    }
 }

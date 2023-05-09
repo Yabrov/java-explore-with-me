@@ -54,4 +54,9 @@ public class LocationRepositoryImpl implements LocationRepository {
     public Optional<AllowedLocation> findAllowedLocationById(Long id) {
         return allowedLocationJpaRepository.findById(id);
     }
+
+    @Override
+    public void deleteAllowedLocation(Long id) {
+        allowedLocationJpaRepository.deleteById(id);
+    }
 }

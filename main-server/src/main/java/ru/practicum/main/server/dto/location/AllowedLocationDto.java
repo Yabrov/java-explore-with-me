@@ -10,21 +10,21 @@ import ru.practicum.main.server.model.enums.LocationType;
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
 public class AllowedLocationDto {
 
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id")
     private Long id;
 
-    @JsonProperty(value = "lon", required = true)
+    @JsonProperty(value = "lon")
     private float longitude;
 
-    @JsonProperty(value = "lat", required = true)
+    @JsonProperty(value = "lat")
     private float latitude;
 
-    @JsonProperty(value = "rad", required = true)
+    @JsonProperty(value = "rad")
     private float radius;
 
-    @JsonProperty(value = "type", required = true)
+    @JsonProperty(value = "type")
     private LocationType type;
 
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 }

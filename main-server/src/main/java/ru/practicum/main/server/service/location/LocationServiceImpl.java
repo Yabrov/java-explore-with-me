@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.server.dto.location.AllowedLocationDto;
 import ru.practicum.main.server.dto.location.NewLocationRequest;
 import ru.practicum.main.server.exception.LocationCreationException;
+import ru.practicum.main.server.exception.LocationDeleteException;
 import ru.practicum.main.server.exception.LocationNotFoundException;
 import ru.practicum.main.server.model.entities.AllowedLocation;
+import ru.practicum.main.server.model.entities.Event;
 import ru.practicum.main.server.model.entities.Location;
+import ru.practicum.main.server.repository.event.EventRepository;
 import ru.practicum.main.server.repository.location.LocationRepository;
 
 import java.util.Collection;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
+    private final EventRepository eventRepository;
     private final Converter<AllowedLocation, AllowedLocationDto> allowedLocationMapper;
     private final Converter<NewLocationRequest, AllowedLocation> locationRequestMapper;
 
@@ -65,5 +69,36 @@ public class LocationServiceImpl implements LocationService {
         AllowedLocation location = locationRepository.findAllowedLocationById(id)
                 .orElseThrow(() -> new LocationNotFoundException(id));
         return allowedLocationMapper.convert(location);
+    }
+
+    @Transactional
+    @Override
+    public AllowedLocationDto updateAllowedLocation(Long id, AllowedLocationDto dto) {
+        AllowedLocation location = locationRepository.findAllowedLocationById(id)
+                .orElseThrow(() -> new LocationNotFoundException(id));
+        if (dto.getType() != null) {
+            location.setType(dto.getType());
+        }
+        if (dto.getName() != null) {
+            location.setName(dto.getName());
+        }
+        return allowedLocationMapper.convert(locationRepository.saveAllowedLocation(location));
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllowedLocation(Long id) {
+        AllowedLocation location = locationRepository.findAllowedLocationById(id)
+                .orElseThrow(() -> new LocationNotFoundException(id));
+        Collection<Event> events = eventRepository.findAllEventsInsideZone(
+                location.getLongitude(),
+                location.getLatitude(),
+                location.getRadius()
+        );
+        if (events.isEmpty()) {
+            locationRepository.deleteAllowedLocation(id);
+        } else {
+            throw new LocationDeleteException(id);
+        }
     }
 }

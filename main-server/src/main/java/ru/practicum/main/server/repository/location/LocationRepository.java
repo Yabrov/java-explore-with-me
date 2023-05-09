@@ -21,4 +21,6 @@ public interface LocationRepository {
     Collection<AllowedLocation> findAllAllowedLocations();
 
     Optional<AllowedLocation> findAllowedLocationById(Long id);
+
+    void deleteAllowedLocation(Long id);
 }
